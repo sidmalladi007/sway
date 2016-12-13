@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <title>Shopper Dashboard</title>
+    <% include ../partials/head %>
+    <% include ../partials/scripts %>
+  </head>
+
+  <body>
+    <div class="wrapper">
+    <div class="sidebar" data-color="orange" data-image="/img/full-screen-image-3.jpg">
+        <!--
+
+            Tip 1: you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple"
+            Tip 2: you can also add an image using data-image tag
+
+        -->
+
+        <div class="logo">
+            <a href="/" class="logo-text">
+                Sway
+            </a>
+        </div>
+
+    	<div class="sidebar-wrapper">
+
+            <div class="user">
+                <div class="photo">
+                    <img src="/img/avatar.jpeg">
+                </div>
+                <div class="info">
+                    <a data-toggle="collapse" href="#collapseExample" class="collapsed">
+                        Jeff Weiner
+                        <b class="caret"></b>
+                    </a>
+                    <div class="collapse" id="collapseExample">
+                        <ul class="nav">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="nav">
+              <li><a href="/shopper/rewards"><i class="pe-7s-gift"></i><p>Rewards</p></a></li>
+              <li><a href="/shopper/spending"><i class="pe-7s-graph"></i><p>Spending</p></a></li>
+            </ul>
+    	</div>
+    </div>
+
+    <div class="main-panel">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">My Spending</a>
+                </div>
+                <div class="collapse navbar-collapse">
+
+                    <form class="navbar-form navbar-left navbar-search-form" role="search">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            <input type="text" value="" class="form-control" placeholder="Search...">
+                        </div>
+                    </form>
+
+                    <ul class="nav navbar-nav navbar-right">
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-gavel"></i>
+                                <p class="hidden-md hidden-lg">
+                                    Actions
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <ul class="dropdown-menu">
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="notification">5</span>
+                                <p class="hidden-md hidden-lg">
+                    Notifications
+                    <b class="caret"></b>
+                  </p>
+                            </a>
+                            <ul class="dropdown-menu">
+                            </ul>
+                        </li>
+
+                        <li class="dropdown dropdown-with-icons">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-list"></i>
+                                <p class="hidden-md hidden-lg">
+                    More
+                    <b class="caret"></b>
+                  </p>
+                            </a>
+                            <ul class="dropdown-menu dropdown-with-icons">
+                                <li>
+                                    <a href="/logout" class="text-danger">
+                                        <i class="pe-7s-close-circle"></i>
+                                        Log out
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="content">
+            <div class="container-fluid">
+            </div>
+            <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+
+
+        <div class="toolbar">
+        <!--        Here you can write extra buttons/actions for the toolbar              -->
+      </div><br>
+          <h2 style="text-align:center">Transactions</h2><hr>
+        <table id="bootstrap-table" class="table">
+        <thead>
+        <th data-field="name" data-sortable="true">Name</th>
+        <th data-field="salary" data-sortable="true">Amount</th>
+        <th data-field="country" data-sortable="true">Date</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td >Lyft</td>
+            <td>$12.57</td>
+            <td>6/12/2016</td>
+          </tr>
+          <tr>
+            <td>Chipotle</td>
+            <td>$8.50</td>
+            <td>5/13/2016</td>
+          </tr>
+        </tbody>
+        </table>
+
+        <!-- the javascript for the datatables -->
+        <script type="text/javascript">
+        var $table = $('#bootstrap-table');
+
+        $().ready(function(){
+          $table.bootstrapTable({
+              showColumns: true,
+              pagination: true,
+              pageSize: 8,
+              clickToSelect: false,
+              pageList: [8,10,25,50,100],
+
+              formatShowingRows: function(pageFrom, pageTo, totalRows){
+                  //do nothing here, we don't want to show the text "showing x of y from..."
+              },
+              formatRecordsPerPage: function(pageNumber){
+                  return pageNumber + " rows visible";
+              },
+              icons: {
+                  refresh: 'fa fa-refresh',
+                  toggle: 'fa fa-th-list',
+                  columns: 'fa fa-columns',
+                  detailOpen: 'fa fa-plus-circle',
+                  detailClose: 'fa fa-minus-circle'
+              }
+          });
+
+          //activate the tooltips after the data table is initialized
+          $('[rel="tooltip"]').tooltip();
+
+          $(window).resize(function () {
+              $table.bootstrapTable('resetView');
+          });
+
+          window.operateEvents = {
+              'click .view': function (e, value, row, index) {
+                  info = JSON.stringify(row);
+
+                  swal('You click view icon, row: ', info);
+                  console.log(info);
+              },
+              'click .edit': function (e, value, row, index) {
+                  info = JSON.stringify(row);
+
+                  swal('You click edit icon, row: ', info);
+                  console.log(info);
+              },
+              'click .remove': function (e, value, row, index) {
+                  console.log(row);
+                  $table.bootstrapTable('remove', {
+                      field: 'id',
+                      values: [row.id]
+                  });
+              }
+          };
+        });
+
+        function operateFormatter(value, row, index) {
+          return [
+              '<a rel="tooltip" title="View" class="btn btn-simple btn-info btn-icon table-action view" href="javascript:void(0)">',
+                  '<i class="fa fa-image"></i>',
+              '</a>',
+              '<a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="javascript:void(0)">',
+                  '<i class="fa fa-edit"></i>',
+              '</a>',
+              '<a rel="tooltip" title="Remove" class="btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)">',
+                  '<i class="fa fa-remove"></i>',
+              '</a>'
+          ].join('');
+        }
+
+
+        </script>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+      <div class="header"><h3 style="text-align:center;">Manually Enter Transaction (Demo Purposes Only)</h3><hr></div>
+      <div class="content">
+          <form class="form-horizontal">
+              <div class="form-group">
+                  <label class="col-md-3 control-label">Name</label>
+                  <div class="col-md-6">
+                      <input name="purchasename" type="text" placeholder="Bob's Baked Goods" class="form-control">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-md-3 control-label">Amount $</label>
+                  <div class="col-md-6">
+                      <input name="purchaseamount" type="text" placeholder="5.50" class="form-control">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-md-3 control-label">Date</label>
+                  <div class="col-md-6">
+                      <input name="purchasedate" type="text" class="form-control datetimepicker" placeholder="12/5/2016"/>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-md-3"></label>
+                  <div class="col-md-9">
+                      <button type="submit" class="btn btn-fill btn-info">Create</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div> <!-- end card -->
+  </div>
+</div>
+</div>
+
+<% include ../partials/footer %>
+
+  </body>
+<script>
+  $('.datetimepicker').datetimepicker({
+    icons: {
+        time: "fa fa-clock-o",
+        date: "fa fa-calendar",
+        up: "fa fa-chevron-up",
+        down: "fa fa-chevron-down",
+        previous: 'fa fa-chevron-left',
+        next: 'fa fa-chevron-right',
+        today: 'fa fa-screenshot',
+        clear: 'fa fa-trash',
+        close: 'fa fa-remove'
+    }
+});
+</script>
+</html>

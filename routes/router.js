@@ -78,6 +78,8 @@ module.exports = function(app) {
   shopperRoutes.get('/capture-auth', checkAuthentication, verifyShopper, onboardingController.captureShopperAuth);
   // shopperRoutes.get('/profile', checkAuthentication, financeComplete, verifyShopper, shopperController.showProfile);
   shopperRoutes.get('/profile', checkAuthentication, verifyShopper, shopperController.showProfile);
+  shopperRoutes.get('/spending', shopperController.showSpending);
+  shopperRoutes.get('/rewards', shopperController.showRewards);
 
 
 
