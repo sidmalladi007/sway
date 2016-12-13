@@ -18,6 +18,7 @@ module.exports = function(app) {
   app.get('/', onboardingController.home);
 
   // Authentication routes
+  app.get('/login', onboardingController.showLogin);
   app.post('/login', function(req, res, next) {
     passport.authenticate('local', {failureRedirect: '/login', successRedirect: '/profile'});
   });
