@@ -90,6 +90,8 @@ module.exports = function(app) {
   businessRoutes.get('/capture-auth', checkAuthentication, verifyBusiness, onboardingController.captureBusinessAuth);
   // businessRoutes.get('/profile', checkAuthentication, financeComplete, verifyBusiness, businessController.showProfile);
   businessRoutes.get('/profile', checkAuthentication, financeComplete, verifyBusiness, businessController.showProfile);
+  businessRoutes.get('/dashboard', businessController.showDashboard);
+  businessRoutes.get('/new-campaign', businessController.showNewCampaign);
 
 
   app.use('/shopper', shopperRoutes);
