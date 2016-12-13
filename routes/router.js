@@ -1,6 +1,8 @@
 const express = require('express');
 const authenticationController = require('../controllers/authentication');
 const onboardingController = require('../controllers/onboarding');
+const shopperController = require('../controllers/shopper');
+const businessController = require('../controllers/business')
 
 function checkAuthentication(req, res, next){
     if (req.isAuthenticated()) {
@@ -70,14 +72,21 @@ module.exports = function(app) {
   // Routes for shoppers (i.e. regular users)
   shopperRoutes.get('/register', onboardingController.showShopperRegister);
   shopperRoutes.post('/register', onboardingController.modifyShopperValues, authenticationController.register);
-  shopperRoutes.get('/profile', function(req, res) {
-    res.send("Shopper has been created!");
-  })
-  // shopperRoutes.get('/connect', onboardingController.showConnect);
+  shopperRoutes.get('/connect', checkAuthentication, verifyShopper, onboardingController.showShopperConnect);
+  shopperRoutes.get('/capture-connect', checkAuthentication, verifyShopper, onboardingController.captureShopperConnect);
+  shopperRoutes.get('/auth', checkAuthentication, verifyShopper, onboardingController.showShopperAuth);
+  shopperRoutes.get('/capture-auth', checkAuthentication, verifyShopper, onboardingController.captureShopperAuth);
+  // shopperRoutes.get('/profile', checkAuthentication, financeComplete, verifyShopper, shopperController.showProfile);
+  shopperRoutes.get('/profile', checkAuthentication, verifyShopper, shopperController.showProfile);
+
+
 
   // Routes for businesses (i.e. local stores)
   businessRoutes.get('/register', onboardingController.showBusinessRegister);
   businessRoutes.post('/register', onboardingController.modifyBusinessValues, authenticationController.register);
+  businessRoutes.get('/auth', checkAuthentication, verifyBusiness, onboardingController.showBusinessAuth);
+  businessRoutes.get('/capture-auth', checkAuthentication, verifyBusiness, onboardingController.captureBusinessAuth);
+  businessRoutes.get('/profile', checkAuthentication, financeComplete, verifyBusiness, businessController.showProfile);
 
 
   app.use('/shopper', shopperRoutes);
