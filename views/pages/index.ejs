@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <title>Sway</title>
+    <% include ../partials/head %>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-transparent navbar-absolute">
+    <div class="container">
+      <div>
+        <div style="text-align:center; color:white; font-size:100px;">Welcome to Hype!</div>
+        <div style="text-align:center; color:white; font-size:25px;">Create and join loyalty programs instanstly</div>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+        </ul>
+      </div>
+    </div>
+    </nav>
+
+    <div class="wrapper wrapper-full-page">
+      <div class="full-page lock-page" data-color="orange" data-image="{% static 'hype/img/full-screen-image-2.jpg' %}">
+        <div style="" class="content">
+          <div style="float: left; padding-top:100px;" class="user-profile">
+            <a href="{% url 'hype:business_register' %}">
+              <button type="button" style="height: 50px; width: 250px; margin-bottom:20px" class="btn btn-neutral btn-round btn-fil btn-wd">Sign in as Business</button>
+            </a>
+            <a href="{% url 'hype:user_register' %}">
+              <button type="button" style="float: left; height: 50px; width: 250px;" class="btn btn-neutral btn-round btn-fil btn-wd">Sign in as Customer</button>
+            </a>
+          </div>
+        </div>
+      <% include ../partials/footer %>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+          lbd.checkFullPageBackgroundImage();
+      });
+    </script>
+    
+  </body>
+
+</html>
