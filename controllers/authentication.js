@@ -9,13 +9,11 @@ function setUserInfo(request) {
     email: request.email,
     role: request.role,
   };
-}.
+}
 
-exports.login = function(req, res, next) {
-  let userInfo = setUserInfo(req.user);
-  res.status(200).json({
-    user: userInfo
-  });
+exports.logout = function(req, res){
+  req.logout();
+  res.redirect('/');
 }
 
 exports.register = function(req, res, next) {

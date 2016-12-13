@@ -29,12 +29,16 @@ app.set('passport', require('./models/authentication.js').init(app));
 mongoose.connect(config.database);
 
 // Define routes.
-fs.readdirSync('./routes').forEach(function (file){
-  if (path.extname(file) == '.js') {
-    console.log("Adding routes in "+file);
-  	require('./routes/'+ file).init(app);
-  	}
-});
+// fs.readdirSync('./routes').forEach(function (file){
+//   if (path.extname(file) == '.js') {
+//     console.log("Adding routes in "+file);
+//   	require('./routes/'+ file).init(app);
+//   	}
+// });
+
+const router = require('./routes/router');
+
+router(app);
 
 // Create server.
 let server = app.listen(config.port);
