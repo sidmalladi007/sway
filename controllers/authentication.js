@@ -18,8 +18,9 @@ exports.logout = function(req, res){
 
 exports.register = function(req, res, next) {
   const email = req.body.email;
-  const fullName = req.body.name;
+  const fullName = req.body.fullName;
   const password = req.body.password;
+  const role = req.body.role;
 
   if (!email) {
     return res.status(422).send({ error: 'You must enter an email address.'});
@@ -33,6 +34,10 @@ exports.register = function(req, res, next) {
     return res.status(422).send({ error: 'You must enter a password.' });
   }
 
+  if (!role) {
+    return res.status(422).send({ error: 'You must enter a role.' });
+  }
+
   User.findOne({ email: email }, function(err, existingUser) {
       if (err) { return next(err); }
 
@@ -43,7 +48,8 @@ exports.register = function(req, res, next) {
       let user = new User({
         email: email,
         password: password,
-        fullName: fullName
+        fullName: fullName,
+        role: role
       });
 
       user.save(function(err, user) {

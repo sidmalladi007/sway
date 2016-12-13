@@ -6,12 +6,17 @@ let mongoose = require('mongoose');
 let cookieParser = require('cookie-parser');
 var fs = require('fs');
 var path = require('path');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var User = require('./models/user')
 
 // Create a new Express application.
 let app = express();
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // Use application-level middleware for common functionality, including logging, parsing, and session handling.
-app.use(morgan('tiny'));
+app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
@@ -28,16 +33,8 @@ app.set('passport', require('./models/authentication.js').init(app));
 // Connect to the database.
 mongoose.connect(config.database);
 
-// Define routes.
-// fs.readdirSync('./routes').forEach(function (file){
-//   if (path.extname(file) == '.js') {
-//     console.log("Adding routes in "+file);
-//   	require('./routes/'+ file).init(app);
-//   	}
-// });
-
+// Capture URL requests
 const router = require('./routes/router');
-
 router(app);
 
 // Create server.

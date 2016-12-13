@@ -17,19 +17,37 @@ module.exports = function(app) {
 
   app.get('/', onboardingController.home);
 
+  // Redirect route to split between users and businesses
+  app.get('/profile', function(req, res) {
+    res.redirect('/login');
+    // if (req.user.role == "Shopper") {
+    //   res.redirect('/shopper-profile');
+    // } else {
+    //   res.redirect('/business-profile');
+    // }
+  });
+
   // Authentication routes
   app.get('/login', onboardingController.showLogin);
-  app.post('/login', function(req, res, next) {
-    passport.authenticate('local', {failureRedirect: '/login', successRedirect: '/profile'});
+
+  app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), function(req, res) {
+    res.redirect('/');
   });
+  
   app.get('/logout', checkAuthentication, authenticationController.logout);
 
   // Routes for shoppers (i.e. regular users)
   shopperRoutes.get('/register', onboardingController.showShopperRegister);
-  // shopperRoutes.post('/register', onboardingController.registerShopper);
+  shopperRoutes.post('/register', onboardingController.modifyShopperValues, authenticationController.register);
+  shopperRoutes.get('/shopper-profile', function(req, res) {
+    console.log("Completed")
+    res.send("Shopper has been created!");
+  })
   // shopperRoutes.get('/connect', onboardingController.showConnect);
 
+  // Routes for businesses (i.e. local stores)
   businessRoutes.get('/register', onboardingController.showBusinessRegister);
+  businessRoutes.post('/register', onboardingController.modifyBusinessValues, authenticationController.register);
 
 
 
