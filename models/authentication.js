@@ -15,34 +15,6 @@ exports.init = function (app) {
   return passport;
 }
 
-// let localOptions = { usernameField: 'email' };
-
-// passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'}, function(email, password, done) {
-//   console.log("Checking...");
-//   User.findOne({ email: email }, function(err, user) {
-//     if(err) { return done(err); }
-//     if(!user) { return done(null, false, { error: 'Your login details could not be verified. Please try again.' }); }
-//     user.comparePassword(password, function(err, isMatch) {
-//       if (err) { return done(err); }
-//       if (!isMatch) { return done(null, false, { error: "Your login details could not be verified. Please try again." }); }
-//       return done(null, user);
-//     });
-//   });
-// });
-
-// passport.use(new Strategy(
-//   function(username, password, done) {
-//     console.log("Checking....")
-//     User.findOne({ email: username }, function(err, foundUser) {
-//       if (err) { return done(err); }
-//       if (!foundUser) { return done(null, false); }
-//       if (foundUser.password != password) { return done(null, false); }
-//       return done(null, foundUser);
-//     });
-//   }));
-
-
-
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'}, function(email, password, done) {
   console.log("Checking...");
   User.findOne({ email: email }, function(err, user) {

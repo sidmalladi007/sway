@@ -1,3 +1,5 @@
+const User = require('../models/user');
+
 exports.home = function(req, res) {
   res.render('pages/index');
 };
@@ -24,4 +26,16 @@ exports.modifyBusinessValues = function(req, res, next) {
   req.body.fullName = req.body.storename;
   req.body.role = "Business";
   next();
+}
+
+exports.authComplete = function(userID) {
+  User.findOne({'_id': userID}, 'authTokens', function(err, result) {
+    return (results.authTokens.length > 0);
+  }
+}
+
+exports.connectComplete = function(userID) {
+  User.findOne({'_id': userID}, 'connectTokens', function(err, result) {
+    return (results.connectTokens.length > 0);
+  }
 }

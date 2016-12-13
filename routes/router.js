@@ -6,8 +6,40 @@ function checkAuthentication(req, res, next){
     if (req.isAuthenticated()) {
         next();
     } else {
-        res.redirect("/login.html");
+        res.redirect("/login");
     }
+}
+
+function verifyShopper(req, res, next) {
+  if (req.user.role == "Shopper") {
+    next();
+  } else {
+    res.redirect("/business/profile");
+  }
+}
+
+function verifyBusiness(req, res, next) {
+  if (req.user.role == "Business") {
+    next();
+  } else {
+    res.redirect("/shopper/profile");
+  }
+}
+
+function financeComplete(req, res, next) {
+  if (req.user.role == "Business") {
+    if (onboardingController.authComplete(req.user._id)) {
+      next();
+    } else {
+      res.redirect("/business/auth");
+    }
+  } else if (req.user.role == "Shopper") {
+    if (onboardingController.connectComplete(req.user._id) && onboardingController.authComplete(req.user._id)) {
+      next();
+    } else {
+      res.redirect("/shopper/connect");
+    }
+  }
 }
 
 module.exports = function(app) {
@@ -19,28 +51,26 @@ module.exports = function(app) {
 
   // Redirect route to split between users and businesses
   app.get('/profile', function(req, res) {
-    res.redirect('/login');
-    // if (req.user.role == "Shopper") {
-    //   res.redirect('/shopper-profile');
-    // } else {
-    //   res.redirect('/business-profile');
-    // }
+    if (req.user.role == "Shopper") {
+      res.redirect('/shopper/profile');
+    } else {
+      res.redirect('/business/profile');
+    }
   });
 
   // Authentication routes
   app.get('/login', onboardingController.showLogin);
 
   app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), function(req, res) {
-    res.redirect('/');
+    res.redirect('/profile');
   });
-  
+
   app.get('/logout', checkAuthentication, authenticationController.logout);
 
   // Routes for shoppers (i.e. regular users)
   shopperRoutes.get('/register', onboardingController.showShopperRegister);
   shopperRoutes.post('/register', onboardingController.modifyShopperValues, authenticationController.register);
-  shopperRoutes.get('/shopper-profile', function(req, res) {
-    console.log("Completed")
+  shopperRoutes.get('/profile', function(req, res) {
     res.send("Shopper has been created!");
   })
   // shopperRoutes.get('/connect', onboardingController.showConnect);
@@ -48,14 +78,6 @@ module.exports = function(app) {
   // Routes for businesses (i.e. local stores)
   businessRoutes.get('/register', onboardingController.showBusinessRegister);
   businessRoutes.post('/register', onboardingController.modifyBusinessValues, authenticationController.register);
-
-
-
-
-
-
-
-
 
 
   app.use('/shopper', shopperRoutes);

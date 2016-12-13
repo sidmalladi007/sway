@@ -57,7 +57,7 @@ exports.register = function(req, res, next) {
 
         let userInfo = setUserInfo(user);
 
-        res.redirect("/profile");
+        res.redirect("/login");
       });
   });
 }

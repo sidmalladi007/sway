@@ -16,8 +16,8 @@ let UserSchema = new Schema({
   fullName: {type: String},
   role: {
     type: String,
-    enum: ['Shopper', 'Store'],
-    default: 'Shopper'
+    enum: ['Shopper', 'Business'],
+    required: true
   },
   transactions: [{
     name: {type: String},
