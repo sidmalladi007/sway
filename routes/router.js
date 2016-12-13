@@ -86,6 +86,7 @@ module.exports = function(app) {
   businessRoutes.post('/register', onboardingController.modifyBusinessValues, authenticationController.register);
   businessRoutes.get('/auth', checkAuthentication, verifyBusiness, onboardingController.showBusinessAuth);
   businessRoutes.get('/capture-auth', checkAuthentication, verifyBusiness, onboardingController.captureBusinessAuth);
+  // businessRoutes.get('/profile', checkAuthentication, financeComplete, verifyBusiness, businessController.showProfile);
   businessRoutes.get('/profile', checkAuthentication, financeComplete, verifyBusiness, businessController.showProfile);
 
 
