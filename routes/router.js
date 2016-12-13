@@ -7,13 +7,13 @@ exports.init = function(app) {
 }
 
 index = function(req, res) {
-  res.render('index');
+  res.render('pages/index');
 };
 
 function checkAuthentication(req, res, next){
-    if(req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         next();
-    }else{
+    } else {
         res.redirect("/login.html");
     }
 }

@@ -1,7 +1,7 @@
 var passport = require('passport');
-var Strategy = require('passport-local').Strategy;
+let LocalStrategy = require('passport-local');
 var expressSession = require('express-session');
-var users = require('./users');
+const User = require('./user');
 
 
 // Initialize Passport and restore authentication state, if any, from the session.
@@ -15,15 +15,29 @@ exports.init = function (app) {
   return passport;
 }
 
-passport.use(new Strategy(
-  function(username, password, done) {
-    users.findByUsername(username, function(err, foundUser) {
+let localOptions = { usernameField: 'email' };
+
+const localLogin = new LocalStrategy(localOptions, function(email, password, done) {
+  User.findOne({ email: email }, function(err, user) {
+    if(err) { return done(err); }
+    if(!user) { return done(null, false, { error: 'Your login details could not be verified. Please try again.' }); }
+    user.comparePassword(password, function(err, isMatch) {
       if (err) { return done(err); }
-      if (!foundUser) { return done(null, false); }
-      if (foundUser.password != password) { return done(null, false); }
-      return done(null, foundUser);
+      if (!isMatch) { return done(null, false, { error: "Your login details could not be verified. Please try again." }); }
+      return done(null, user);
     });
-  }));
+  });
+});
+
+// passport.use(new Strategy(
+//   function(username, password, done) {
+//     User.findByUsername(username, function(err, foundUser) {
+//       if (err) { return done(err); }
+//       if (!foundUser) { return done(null, false); }
+//       if (foundUser.password != password) { return done(null, false); }
+//       return done(null, foundUser);
+//     });
+//   }));
 
 passport.serializeUser(function(user, done) {
   // Pass null for no error, and the user ID as a key to lookup the user

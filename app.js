@@ -4,6 +4,8 @@ let config = require('./config/main');
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 let cookieParser = require('cookie-parser');
+var fs = require('fs');
+var path = require('path');
 
 // Create a new Express application.
 let app = express();
