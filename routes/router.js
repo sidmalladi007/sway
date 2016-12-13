@@ -54,7 +54,7 @@ module.exports = function(app) {
   // Redirect route to split between users and businesses
   app.get('/profile', function(req, res) {
     if (req.user.role == "Shopper") {
-      res.redirect('/shopper/profile');
+      res.redirect('/shopper/spending');
     } else {
       res.redirect('/business/profile');
     }
@@ -78,7 +78,7 @@ module.exports = function(app) {
   shopperRoutes.get('/capture-auth', checkAuthentication, verifyShopper, onboardingController.captureShopperAuth);
   // shopperRoutes.get('/profile', checkAuthentication, financeComplete, verifyShopper, shopperController.showProfile);
   shopperRoutes.get('/profile', checkAuthentication, verifyShopper, shopperController.showProfile);
-  shopperRoutes.get('/spending', shopperController.showSpending);
+  shopperRoutes.get('/spending', checkAuthentication, verifyShopper, shopperController.showSpending);
   shopperRoutes.get('/rewards', shopperController.showRewards);
 
 

@@ -20,14 +20,30 @@ let UserSchema = new Schema({
     required: true
   },
   transactions: [{
+    transactionName: {type: String},
+    transactionAmount: {type: String},
+    transactionDate: {type: String},
+  }],
+  subscriptions: [{
+    business: {type: String},
+    visits: {type: Number},
+    reward: {type: Number},
+    goalVisits: {type: Number},
+    minSpend: {type: Number}
+  }],
+  campaigns: [{
     name: {type: String},
-    amount: {type: String},
-    change: {type: String},
+    description: {type: String},
+    numVisits: {type: Number},
+    minSpent: {type: Number},
+    reward: {type: Number},
+    startDate: {type: String},
+    endDate: {type: String}
   }],
-  donations: [{
-    amount: {type: Number},
-    date: {type: Date}
-  }],
+  totalRewards: {
+    type: Number,
+    default: 0
+  },
   authTokens: [{
     type: String
   }],
@@ -40,7 +56,6 @@ let UserSchema = new Schema({
     default: 0
   },
   lastRefresh: {type: Date},
-  businessSubscriptions: [{type: String}],
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date }
 },

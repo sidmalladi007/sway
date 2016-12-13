@@ -54,7 +54,7 @@ exports.captureShopperConnect = function(req, res) {
   var public_token = req.query.public_token;
   plaidClient.exchangeToken(public_token, function(err, tokenResponse) {
     if (err != null) {
-      res.json({error: 'Unable to exchange public_token'});
+      res.send('Unable to exchange public_token');
       console.log("Token exchange didn't work");
     } else {
       // The exchange was successful - this access_token can now be used to
@@ -67,6 +67,30 @@ exports.captureShopperConnect = function(req, res) {
         } else {
           console.log("Plaid token inserted!");
           res.redirect('/shopper/auth');
+          plaidClient.getConnectUser(plaidAccessToken, { gte: '30 days ago', }, function(err, response) {
+          response.transactions.forEach(function(transaction) {
+          var transactionName = transaction.name;
+          if (transactionName.startsWith("DEBIT CARD PURCHASE")) {
+            name = transactionName.split(' ').slice(4).join(' ');
+          }
+          var amount = transaction.amount
+          var transactionAmount = amount.toFixed(2);
+          var backupDate = Date.now();
+          var transactionDate = transaction.date || backupDate.toISOString().slice(0,10);
+          var newTransaction = {transactionName: name, amount: transactionAmount, date: transactionDate};
+          allTransactionsToAdd.push(newTransaction);
+        });
+        User.update({'_id': req.user._id}, { $push: { transactions: { $each: allTransactionsToAdd } } }, function(err, results) {
+          if (err) {
+            console.log(err);
+          } else {
+            let rightNow = new Date();
+            User.update({'_id': req.user._id}, { $set: { lastRefresh: rightNow }}, function(err, results) {
+              if (err) {console.log(err);}
+            })
+          }
+        })
+      });
         }
       });
     }
