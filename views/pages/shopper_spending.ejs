@@ -138,16 +138,13 @@
         <th data-field="country" data-sortable="true">Date</th>
         </thead>
         <tbody>
+          <% transactions.forEach(function(transaction) { %>
           <tr>
-            <td >Lyft</td>
-            <td>$12.57</td>
-            <td>6/12/2016</td>
+            <td><%= transaction.name %></td>
+            <td><%= transaction.amount %></td>
+            <td><%= transaction.date %></td>
           </tr>
-          <tr>
-            <td>Chipotle</td>
-            <td>$8.50</td>
-            <td>5/13/2016</td>
-          </tr>
+          <% }); %>
         </tbody>
         </table>
 

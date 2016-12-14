@@ -20,9 +20,9 @@ let UserSchema = new Schema({
     required: true
   },
   transactions: [{
-    transactionName: {type: String},
-    transactionAmount: {type: String},
-    transactionDate: {type: String},
+    name: {type: String},
+    amount: {type: String},
+    date: {type: String},
   }],
   subscriptions: [{
     business: {type: String},
@@ -51,10 +51,6 @@ let UserSchema = new Schema({
     type: String
   }],
   stripeCustomerID: {type: String},
-  spareChange: {
-    type: Number,
-    default: 0
-  },
   lastRefresh: {type: Date},
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date }

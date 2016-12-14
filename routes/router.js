@@ -2,7 +2,8 @@ const express = require('express');
 const authenticationController = require('../controllers/authentication');
 const onboardingController = require('../controllers/onboarding');
 const shopperController = require('../controllers/shopper');
-const businessController = require('../controllers/business')
+const businessController = require('../controllers/business');
+const User = require('../models/user');
 
 function checkAuthentication(req, res, next){
     if (req.isAuthenticated()) {
@@ -36,11 +37,14 @@ function financeComplete(req, res, next) {
       res.redirect("/business/auth");
     }
   } else if (req.user.role == "Shopper") {
-    if (onboardingController.connectComplete(req.user._id) && onboardingController.authComplete(req.user._id)) {
-      next();
-    } else {
+    console.log(onboardingController.connectComplete(req.user._id));
+    User.findOne({'_id': req.user._id}, 'connectTokens', function(err, result) {
+      if (result.connectTokens.length > 0) {
+        next();
+      } else {
       res.redirect("/shopper/connect");
-    }
+      }
+    })
   }
 }
 
@@ -54,6 +58,7 @@ module.exports = function(app) {
   // Redirect route to split between users and businesses
   app.get('/profile', function(req, res) {
     if (req.user.role == "Shopper") {
+      console.log(req.user._id);
       res.redirect('/shopper/spending');
     } else {
       res.redirect('/business/profile');
@@ -78,7 +83,7 @@ module.exports = function(app) {
   shopperRoutes.get('/capture-auth', checkAuthentication, verifyShopper, onboardingController.captureShopperAuth);
   // shopperRoutes.get('/profile', checkAuthentication, financeComplete, verifyShopper, shopperController.showProfile);
   shopperRoutes.get('/profile', checkAuthentication, verifyShopper, shopperController.showProfile);
-  shopperRoutes.get('/spending', checkAuthentication, verifyShopper, shopperController.showSpending);
+  shopperRoutes.get('/spending', checkAuthentication, financeComplete, verifyShopper, shopperController.showSpending);
   shopperRoutes.get('/rewards', shopperController.showRewards);
 
 
