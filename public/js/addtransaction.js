@@ -13,7 +13,6 @@ $(document).ready(function() {
   var date = dateComponents[2] + "-" + dateComponents[0] + "-" + dateComponents[1]
   var gpa = $('#newGPA').val();
   var reqURL = "/shopper/addtransaction?name=" + name + "&" + "amount=" + amount + "&date=" + date;
-  console.log(reqURL);
   $.ajax({
   url: reqURL,
   type: 'POST',

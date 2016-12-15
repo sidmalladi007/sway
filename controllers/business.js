@@ -23,14 +23,8 @@ exports.createCampaign = function(req, res) {
   var campaignDescription = req.body.description;
   var numberOfVisits = req.body.numberofvisits;
   var minimumSpend = Number(req.body.minimumspend);
-  console.log("MINIMUM SPEND BELOW");
-  console.log(minimumSpend);
   var campaignReward = req.body.rewarddescription;
-  console.log("REWARD BELOW");
-  console.log(campaignReward);
   var rewardValue = Number(req.body.maxreward);
-  console.log("MAX REWARD BELOW");
-  console.log(rewardValue);
   var campaignStartUnmodified = req.body.startdate;
   var campaignStart = campaignStartUnmodified.split(" ")[0];
   var campaignEndUnmodified = req.body.enddate;
@@ -40,7 +34,6 @@ exports.createCampaign = function(req, res) {
     if (err) {
       console.log(err);
     } else {
-      console.log(results);
       res.redirect("/business/dashboard");
     }
   });

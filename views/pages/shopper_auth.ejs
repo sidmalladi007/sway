@@ -38,6 +38,7 @@
       env: 'tartan',
       product: 'auth',
       key: "8489733364a36f7833f0604a7b8f22",
+      selectAccount: true,
       onSuccess: function(token, metadata) {
         console.log('account_id is', metadata.account_id);
         window.location = '/shopper/capture-auth?public_token=' + token;

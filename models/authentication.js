@@ -16,7 +16,6 @@ exports.init = function (app) {
 }
 
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'}, function(email, password, done) {
-  console.log("Checking...");
   User.findOne({ email: email }, function(err, user) {
     if(err) { return done(err); }
     if(!user) { return done(null, false, { error: 'Your login details could not be verified. Please try again.' }); }

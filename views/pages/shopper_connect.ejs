@@ -38,8 +38,8 @@
       env: 'tartan',
       product: 'connect',
       key: "8489733364a36f7833f0604a7b8f22",
+      selectAccount: true,
       onSuccess: function(token, metadata) {
-        console.log('account_id is', metadata.account_id);
         window.location = '/shopper/capture-connect?public_token=' + token;
       },
     });

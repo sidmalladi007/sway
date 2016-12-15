@@ -22,7 +22,6 @@ exports.showSpending = function(req, res) {
       refreshTime = '30 days ago';
       plaidClient.getConnectUser(context.connectTokens[0], { gte: refreshTime, }, function(err, response) {
         var allTransactionsToAdd = [];
-        console.log(response.transactions);
         response.transactions.forEach(function(transaction) {
           var transactionName = transaction.name;
           if (transactionName.startsWith("DEBIT CARD PURCHASE")) {
@@ -49,7 +48,6 @@ exports.showSpending = function(req, res) {
             User.findOne({'_id': req.user._id}, 'subscriptions', function(err, result) {
               if (err) { console.log(err); }
               res.render('pages/shopper_spending', {transactions: sortedDocs, subscriptions: result.subscriptions, fullName: req.user.fullName});
-              console.log(sortedDocs);
               sortedDocs.transactions.forEach(function(transaction) {
                 result.subscriptions.forEach(function(subscription) {
                   if (transaction.name.toUpperCase().indexOf(subscription.business.toUpperCase()) >= 0) {
@@ -108,7 +106,6 @@ exports.showSpending = function(req, res) {
             User.findOne({'_id': req.user._id}, 'subscriptions', function(err, result) {
               if (err) { console.log(err); }
               res.render('pages/shopper_spending', {transactions: sortedDocs, subscriptions: result.subscriptions, fullName: req.user.fullName});
-              console.log(sortedDocs);
               sortedDocs.transactions.forEach(function(transaction) {
                 result.subscriptions.forEach(function(subscription) {
                   if (transaction.name.toUpperCase().indexOf(subscription.business.toUpperCase()) >= 0) {

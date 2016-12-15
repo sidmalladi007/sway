@@ -17,7 +17,7 @@ function verifyShopper(req, res, next) {
   if (req.user.role == "Shopper") {
     next();
   } else {
-    res.redirect("/business/profile");
+    res.redirect("/business/dashboard");
   }
 }
 
@@ -25,7 +25,7 @@ function verifyBusiness(req, res, next) {
   if (req.user.role == "Business") {
     next();
   } else {
-    res.redirect("/shopper/profile");
+    res.redirect("/shopper/spending");
   }
 }
 
@@ -49,7 +49,6 @@ function financeComplete(req, res, next) {
       }
     });
   } else if (req.user.role == "Shopper") {
-    console.log(onboardingController.connectComplete(req.user._id));
     User.findOne({'_id': req.user._id}, 'connectTokens', function(err, result) {
       if (result.connectTokens.length > 0) {
         next();
@@ -70,7 +69,6 @@ module.exports = function(app) {
   // Redirect route to split between users and businesses
   app.get('/profile', function(req, res) {
     if (req.user.role == "Shopper") {
-      console.log(req.user._id);
       res.redirect('/shopper/spending');
     } else {
       res.redirect('/business/dashboard');
