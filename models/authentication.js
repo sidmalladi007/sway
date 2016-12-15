@@ -1,3 +1,6 @@
+var env = require('node-env-file');
+env(__dirname + '/../.env');
+
 var passport = require('passport');
 let LocalStrategy = require('passport-local').Strategy;
 var expressSession = require('express-session');
@@ -7,7 +10,7 @@ const User = require('./user');
 // Initialize Passport and restore authentication state, if any, from the session.
 exports.init = function (app) {
   app.use(expressSession((
-    {secret: 'Tartans',
+    {secret: process.env.AUTH_SECRET,
      resave: false,
      saveUninitialized: true })));
   app.use(passport.initialize());

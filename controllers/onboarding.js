@@ -1,8 +1,11 @@
+var env = require('node-env-file');
+env(__dirname + '/../.env');
+
 const User = require('../models/user');
 var plaid = require('plaid');
-var stripe = require("stripe")("sk_test_syV9DDTuDwIsdDGvxqVCA4K2");
-var PLAID_CLIENT_ID = "58509a6bfbfa99426419332c" //envvar.string('PLAID_CLIENT_ID');
-var PLAID_SECRET = "68a5788fd6829e18b18f9edcc815c6" //envvar.string('PLAID_SECRET');
+var stripe = require("stripe")(process.env.STRIPE_KEY);
+var PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID;
+var PLAID_SECRET = process.env.PLAID_SECRET;
 
 var plaidClient = new plaid.Client(PLAID_CLIENT_ID, PLAID_SECRET, plaid.environments.tartan);
 
