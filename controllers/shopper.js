@@ -1,6 +1,3 @@
-var env = require('node-env-file');
-env(__dirname + '/../.env');
-
 const User = require('../models/user');
 var plaid = require('plaid');
 var stripe = require("stripe")(process.env.STRIPE_KEY);

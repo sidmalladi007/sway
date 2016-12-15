@@ -1,6 +1,3 @@
-var env = require('node-env-file');
-env(__dirname + '/../.env');
-
 var passport = require('passport');
 let LocalStrategy = require('passport-local').Strategy;
 var expressSession = require('express-session');

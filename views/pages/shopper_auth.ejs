@@ -1,3 +1,5 @@
+<!-- Bootstrap elements borrowed from Creative Tim at http://www.creative-tim.com/ -->
+
 <!doctype html>
 <html lang="en">
 
@@ -37,10 +39,9 @@
       clientName: 'Sway',
       env: 'tartan',
       product: 'auth',
-      key: "8489733364a36f7833f0604a7b8f22",
+      key: "c03eb881af0c0bca50454b0034091f",
       selectAccount: true,
       onSuccess: function(token, metadata) {
-        console.log('account_id is', metadata.account_id);
         window.location = '/shopper/capture-auth?public_token=' + token;
       },
     });
