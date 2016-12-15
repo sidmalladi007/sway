@@ -117,17 +117,17 @@
   <div class="card">
       <div class="header"><h3 style="text-align:center;">Create New Loyalty Program</h3><hr></div>
       <div class="content">
-          <form class="form-horizontal">
+          <form method="POST" action="/business/create-campaign" class="form-horizontal">
               <div class="form-group">
                   <label class="col-md-3 control-label">Name</label>
                   <div class="col-md-6">
-                      <input name="purchasename" type="text" placeholder="Christmas Tea Lovers" class="form-control">
+                      <input name="campaignname" type="text" placeholder="Christmas Tea Lovers" class="form-control">
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-md-3 control-label">Description</label>
                   <div class="col-md-6">
-                      <input name="description" type="text" placeholder="5.50" class="form-control" placeholder="Give your favorite teas some love this winter holidays to get extra rewards!">
+                      <input name="description" type="text" class="form-control" placeholder="Give your favorite teas some love this winter holidays to get extra rewards!">
                   </div>
               </div>
               <div class="form-group">
@@ -137,15 +137,21 @@
                   </div>
               </div>
               <div class="form-group">
-                  <label class="col-md-3 control-label">Minimum Spend per Visit</label>
+                  <label class="col-md-3 control-label">Minimum Spend per Visit ($)</label>
                   <div class="col-md-6">
-                      <input name="minimumspend" type="text" class="form-control" placeholder="$4">
+                      <input name="minimumspend" type="text" class="form-control" placeholder="4">
                   </div>
               </div>
               <div class="form-group">
-                  <label class="col-md-3 control-label">Reward</label>
+                  <label class="col-md-3 control-label">Reward Description</label>
                   <div class="col-md-6">
-                      <input name="reward" type="text" placeholder="Any drink up to a $5 value" class="form-control">
+                      <input name="rewarddescription" type="text" placeholder="Free medium-sized tea" class="form-control">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-md-3 control-label">Max Reward Value ($)</label>
+                  <div class="col-md-6">
+                      <input name="maxreward" type="text" placeholder="5" class="form-control">
                   </div>
               </div>
               <div class="form-group">

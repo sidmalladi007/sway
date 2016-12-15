@@ -204,30 +204,179 @@
   <div class="toolbar">
   <!--        Here you can write extra buttons/actions for the toolbar              -->
 </div><br>
-    <h2 style="text-align:center">Loyal Customers</h2><hr>
-  <table id="bootstrap-table" class="table">
+    <h2 style="text-align:center">Loyalty Programs</h2><hr>
+  <table id="campaigns-table" class="table">
   <thead>
-  <th data-field="customer" data-sortable="true">Customer</th>
-  <th data-field="numberofvisits" data-sortable="true">Number of Visits</th>
-  <th data-field="totalspent" data-sortable="true">Total Spent ($)</th>
+  <th class="text-center" data-field="name" data-sortable="true">Campaign Name</th>
+  <th class="text-center" data-field="goal" data-sortable="true">Goal</th>
+  <th class="text-center" data-field="reward" data-sortable="true">Reward</th>
+  <th class="text-center" data-field="dates" data-sortable="true">Dates</th>
+  </thead>
+  <tbody>
+    <% campaigns.forEach(function(campaign) { %>
+    <tr>
+      <td class="text-center"><%= campaign.name %></td>
+      <td class="text-center"><%= campaign.numVisits %> visits @ <%= campaign.minSpent %>/purchase</td>
+      <td class="text-center"><%= campaign.rewardName %> (up to $<%= campaign.maxReward %>)</td>
+      <td class="text-center"><%= campaign.startDate %> - <%= campaign.endDate %></td>
+    </tr>
+    <% }); %>
+    campaigns: [{
+      name: {type: String},
+      description: {type: String},
+      numVisits: {type: Number},
+      minSpent: {type: Number},
+      rewardName: {type: String},
+      maxReward: {type: Number},
+      startDate: {type: String},
+      endDate: {type: String}
+    }],
+  </tbody>
+  </table>
+
+  <!-- the javascript for the datatables -->
+  <script type="text/javascript">
+  var $table = $('#campaigns-table');
+
+  $().ready(function(){
+    $table.bootstrapTable({
+        showColumns: true,
+        pagination: true,
+        pageSize: 8,
+        clickToSelect: false,
+        pageList: [8,10,25,50,100],
+
+        formatShowingRows: function(pageFrom, pageTo, totalRows){
+            //do nothing here, we don't want to show the text "showing x of y from..."
+        },
+        formatRecordsPerPage: function(pageNumber){
+            return pageNumber + " rows visible";
+        },
+        icons: {
+            refresh: 'fa fa-refresh',
+            toggle: 'fa fa-th-list',
+            columns: 'fa fa-columns',
+            detailOpen: 'fa fa-plus-circle',
+            detailClose: 'fa fa-minus-circle'
+        }
+    });
+
+    //activate the tooltips after the data table is initialized
+    $('[rel="tooltip"]').tooltip();
+
+    $(window).resize(function () {
+        $table.bootstrapTable('resetView');
+    });
+
+    window.operateEvents = {
+        'click .view': function (e, value, row, index) {
+            info = JSON.stringify(row);
+
+            swal('You click view icon, row: ', info);
+            console.log(info);
+        },
+        'click .edit': function (e, value, row, index) {
+            info = JSON.stringify(row);
+
+            swal('You click edit icon, row: ', info);
+            console.log(info);
+        },
+        'click .remove': function (e, value, row, index) {
+            console.log(row);
+            $table.bootstrapTable('remove', {
+                field: 'id',
+                values: [row.id]
+            });
+        }
+    };
+  });
+
+  function operateFormatter(value, row, index) {
+    return [
+        '<a rel="tooltip" title="View" class="btn btn-simple btn-info btn-icon table-action view" href="javascript:void(0)">',
+            '<i class="fa fa-image"></i>',
+        '</a>',
+        '<a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="javascript:void(0)">',
+            '<i class="fa fa-edit"></i>',
+        '</a>',
+        '<a rel="tooltip" title="Remove" class="btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)">',
+            '<i class="fa fa-remove"></i>',
+        '</a>'
+    ].join('');
+  }
+
+
+  </script>
+</div>
+</div>
+</div>
+      <div class="row">
+              <div class="col-md-12">
+                  <div class="card">
+
+
+  <div class="toolbar">
+  <!--        Here you can write extra buttons/actions for the toolbar              -->
+</div><br>
+    <h2 style="text-align:center">Rewards Members</h2><hr>
+  <table id="customers-table" class="table">
+  <thead>
+  <th class="text-center" data-field="customer" data-sortable="true">Customer</th>
+  <th class="text-center" data-field="numberofvisits" data-sortable="true">Number of Visits</th>
+  <th class="text-center" data-field="totalspent" data-sortable="true">Total Spent ($)</th>
   </thead>
   <tbody>
     <tr>
-      <td >Sid Malladi</td>
+      <td>Elon Musk</td>
       <td>12</td>
       <td>39.45</td>
     </tr>
     <tr>
-      <td>Akash Kejriwal</td>
+      <td>Sergey Brin</td>
       <td>3</td>
       <td>12.27</td>
+    </tr>
+    <tr>
+      <td>Sheryl Sandberg</td>
+      <td>5</td>
+      <td>18.72</td>
+    </tr>
+    <tr>
+      <td>Jeff Bezos</td>
+      <td>1</td>
+      <td>3.48</td>
+    </tr>
+    <tr>
+      <td>Mark Benioff</td>
+      <td>7</td>
+      <td>22.45</td>
+    </tr>
+    <tr>
+      <td>Mark Zuckerberg</td>
+      <td>9</td>
+      <td>27.98</td>
+    </tr>
+    <tr>
+      <td>Peter Thiel</td>
+      <td>11</td>
+      <td>32.44</td>
+    </tr>
+    <tr>
+      <td>Larry Page</td>
+      <td>10</td>
+      <td>36.45</td>
+    </tr>
+    <tr>
+      <td>Satya Nadella</td>
+      <td>4</td>
+      <td>14.04</td>
     </tr>
   </tbody>
   </table>
 
   <!-- the javascript for the datatables -->
   <script type="text/javascript">
-  var $table = $('#bootstrap-table');
+  var $table = $('#customers-table');
 
   $().ready(function(){
     $table.bootstrapTable({

@@ -85,6 +85,7 @@ module.exports = function(app) {
   shopperRoutes.get('/profile', checkAuthentication, verifyShopper, shopperController.showProfile);
   shopperRoutes.get('/spending', checkAuthentication, financeComplete, verifyShopper, shopperController.showSpending);
   shopperRoutes.get('/rewards', shopperController.showRewards);
+  shopperRoutes.post('/addtransaction', shopperController.addTransaction);
 
 
 
@@ -97,6 +98,7 @@ module.exports = function(app) {
   businessRoutes.get('/profile', checkAuthentication, financeComplete, verifyBusiness, businessController.showProfile);
   businessRoutes.get('/dashboard', businessController.showDashboard);
   businessRoutes.get('/new-campaign', businessController.showNewCampaign);
+  businessRoutes.post('/create-campaign', businessController.createCampaign);
 
 
   app.use('/shopper', shopperRoutes);

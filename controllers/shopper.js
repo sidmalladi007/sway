@@ -157,3 +157,17 @@ exports.showSpending = function(req, res) {
 exports.showRewards = function(req, res) {
   res.render('pages/shopper_rewards');
 }
+
+exports.addTransaction = function(req, res) {
+  var transactionName = req.query.name;
+  var transactionAmount = req.query.amount;
+  var transactionDate = req.query.date;
+  var transaction = {name: transactionName, amount: transactionAmount, date: transactionDate};
+  User.findByIdAndUpdate({'_id': req.user._id}, { $push: { transactions: transaction } }, { new: true }, function(err, results) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send({status: "All good!"});
+    }
+  })
+}
