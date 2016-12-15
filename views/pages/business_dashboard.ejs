@@ -22,7 +22,7 @@
                 </div>
                 <div class="info">
                     <a data-toggle="collapse" href="#collapseExample" class="collapsed">
-                        Bob's Tea Shop
+                        <%= fullName %>
                         <b class="caret"></b>
                     </a>
                     <div class="collapse" id="collapseExample">
@@ -196,6 +196,7 @@
   								</div>
   				</div>
       </div>
+      <% if (campaigns.length > 0) { %>
       <div class="row">
               <div class="col-md-12">
                   <div class="card">
@@ -216,21 +217,11 @@
     <% campaigns.forEach(function(campaign) { %>
     <tr>
       <td class="text-center"><%= campaign.name %></td>
-      <td class="text-center"><%= campaign.numVisits %> visits @ <%= campaign.minSpent %>/purchase</td>
+      <td class="text-center"><%= campaign.numVisits %> visits @ $<%= campaign.minSpent %>/purchase</td>
       <td class="text-center"><%= campaign.rewardName %> (up to $<%= campaign.maxReward %>)</td>
       <td class="text-center"><%= campaign.startDate %> - <%= campaign.endDate %></td>
     </tr>
     <% }); %>
-    campaigns: [{
-      name: {type: String},
-      description: {type: String},
-      numVisits: {type: Number},
-      minSpent: {type: Number},
-      rewardName: {type: String},
-      maxReward: {type: Number},
-      startDate: {type: String},
-      endDate: {type: String}
-    }],
   </tbody>
   </table>
 
@@ -310,6 +301,7 @@
 </div>
 </div>
 </div>
+<% } %>
       <div class="row">
               <div class="col-md-12">
                   <div class="card">

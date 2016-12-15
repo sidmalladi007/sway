@@ -36,7 +36,8 @@ let UserSchema = new Schema({
     description: {type: String},
     numVisits: {type: Number},
     minSpent: {type: Number},
-    reward: {type: Number},
+    rewardName: {type: String},
+    maxReward: {type: Number},
     startDate: {type: String},
     endDate: {type: String}
   }],

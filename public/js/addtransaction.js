@@ -19,9 +19,9 @@ $(document).ready(function() {
   type: 'POST',
   success: function(result) {
     var row = $("<tr></tr>");
-    var col1 = $("<td>" + name + "</td>");
-    var col2 = $("<td>" + amount + "</td>");
-    var col3 = $("<td>" + date + "</td>");
+    var col1 = $("<td class='text-center'>" + name + "</td>");
+    var col2 = $("<td class='text-center'>" + amount + "</td>");
+    var col3 = $("<td class='text-center'>" + date + "</td>");
     row.append(col1, col2, col3).prependTo("#bootstrap-table");
     }
   });

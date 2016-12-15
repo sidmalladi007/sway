@@ -16,7 +16,7 @@ let app = express();
 // app.use(passport.session());
 
 // Use application-level middleware for common functionality, including logging, parsing, and session handling.
-app.use(morgan('dev'));
+app.use(morgan('tiny'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 

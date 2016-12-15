@@ -13,10 +13,6 @@ function sortTransactions(array, key) {
     });
 }
 
-exports.showProfile = function(req, res) {
-  res.send("This is your account!!")
-}
-
 exports.showSpending = function(req, res) {
   User.findOne({'_id': req.user._id}, 'connectTokens lastRefresh', function(err, context) {
     var now = new Date();
@@ -52,7 +48,7 @@ exports.showSpending = function(req, res) {
             var sortedDocs = sortTransactions(documents, 'date');
             User.findOne({'_id': req.user._id}, 'subscriptions', function(err, result) {
               if (err) { console.log(err); }
-              res.render('pages/shopper_spending', {transactions: sortedDocs, subscriptions: result.subscriptions});
+              res.render('pages/shopper_spending', {transactions: sortedDocs, subscriptions: result.subscriptions, fullName: req.user.fullName});
               console.log(sortedDocs);
               sortedDocs.transactions.forEach(function(transaction) {
                 result.subscriptions.forEach(function(subscription) {
@@ -111,7 +107,7 @@ exports.showSpending = function(req, res) {
             var sortedDocs = sortTransactions(documents, 'date');
             User.findOne({'_id': req.user._id}, 'subscriptions', function(err, result) {
               if (err) { console.log(err); }
-              res.render('pages/shopper_spending', {transactions: sortedDocs, subscriptions: result.subscriptions});
+              res.render('pages/shopper_spending', {transactions: sortedDocs, subscriptions: result.subscriptions, fullName: req.user.fullName});
               console.log(sortedDocs);
               sortedDocs.transactions.forEach(function(transaction) {
                 result.subscriptions.forEach(function(subscription) {
@@ -147,7 +143,7 @@ exports.showSpending = function(req, res) {
         var displayedSubscriptions = (results.subscriptions);
         User.findOne({'_id': req.user._id}, 'transactions', function(err, documents) {
           var sortedDocs = sortTransactions(documents, 'date');
-          res.render('pages/shopper_spending', {transactions: sortedDocs, subscriptions: displayedSubscriptions});
+          res.render('pages/shopper_spending', {transactions: sortedDocs, subscriptions: displayedSubscriptions, fullName: req.user.fullName});
         });
       })
     }
@@ -155,7 +151,7 @@ exports.showSpending = function(req, res) {
 }
 
 exports.showRewards = function(req, res) {
-  res.render('pages/shopper_rewards');
+  res.render('pages/shopper_rewards', {fullName: req.user.fullName});
 }
 
 exports.addTransaction = function(req, res) {

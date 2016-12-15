@@ -43,7 +43,12 @@ exports.modifyBusinessValues = function(req, res, next) {
 
 exports.authComplete = function(userID) {
   User.findOne({'_id': userID}, 'authTokens', function(err, result) {
-    return (results.authTokens.length > 0);
+    if (result.authTokens.length > 0) {
+      console.log("ITS TRUE");
+      return true;
+    } else {
+      return false;
+    }
   })
 }
 
@@ -111,7 +116,7 @@ exports.captureShopperConnect = function(req, res) {
                 var sortedDocs = sortTransactions(documents, 'date');
                 User.findOne({'_id': req.user._id}, 'subscriptions', function(err, result) {
                   if (err) { console.log(err); }
-                  res.render('pages/shopper_spending', {transactions: sortedDocs, subscriptions: result.subscriptions});
+                  res.render('pages/shopper_spending', {transactions: sortedDocs, subscriptions: result.subscriptions, fullName: req.user.fullName});
                   console.log("HERE ARE THE SORTED DOCS");
                   console.log(sortedDocs);
                   sortedDocs.forEach(function(transaction) {
@@ -187,7 +192,7 @@ exports.captureShopperAuth = function(req, res) {
                 } else {
                   console.log("Stripe ID inserted!");
                 }
-                res.redirect('/shopper/profile');
+                res.redirect('/shopper/spending');
               })
             }
         });
@@ -235,8 +240,8 @@ exports.captureBusinessAuth = function(req, res) {
                   console.log(err);
                 } else {
                   console.log("Stripe ID inserted!");
+                  res.redirect('/business/dashboard');
                 }
-                res.redirect('/business/profile');
               })
             }
         });

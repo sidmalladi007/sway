@@ -29,13 +29,25 @@ function verifyBusiness(req, res, next) {
   }
 }
 
+exports.authComplete = function(userID) {
+  User.findOne({'_id': userID}, 'authTokens', function(err, result) {
+    if (result.authTokens.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  })
+}
+
 function financeComplete(req, res, next) {
   if (req.user.role == "Business") {
-    if (onboardingController.authComplete(req.user._id)) {
-      next();
-    } else {
-      res.redirect("/business/auth");
-    }
+    User.findOne({'_id': req.user._id}, 'authTokens', function(err, result) {
+      if (result.authTokens.length > 0) {
+        next();
+      } else {
+        res.redirect("/business/auth");
+      }
+    });
   } else if (req.user.role == "Shopper") {
     console.log(onboardingController.connectComplete(req.user._id));
     User.findOne({'_id': req.user._id}, 'connectTokens', function(err, result) {
@@ -61,7 +73,7 @@ module.exports = function(app) {
       console.log(req.user._id);
       res.redirect('/shopper/spending');
     } else {
-      res.redirect('/business/profile');
+      res.redirect('/business/dashboard');
     }
   });
 
@@ -81,11 +93,9 @@ module.exports = function(app) {
   shopperRoutes.get('/capture-connect', checkAuthentication, verifyShopper, onboardingController.captureShopperConnect);
   shopperRoutes.get('/auth', checkAuthentication, verifyShopper, onboardingController.showShopperAuth);
   shopperRoutes.get('/capture-auth', checkAuthentication, verifyShopper, onboardingController.captureShopperAuth);
-  // shopperRoutes.get('/profile', checkAuthentication, financeComplete, verifyShopper, shopperController.showProfile);
-  shopperRoutes.get('/profile', checkAuthentication, verifyShopper, shopperController.showProfile);
   shopperRoutes.get('/spending', checkAuthentication, financeComplete, verifyShopper, shopperController.showSpending);
-  shopperRoutes.get('/rewards', shopperController.showRewards);
-  shopperRoutes.post('/addtransaction', shopperController.addTransaction);
+  shopperRoutes.get('/rewards', checkAuthentication, verifyShopper, shopperController.showRewards);
+  shopperRoutes.post('/addtransaction', checkAuthentication, verifyShopper, shopperController.addTransaction);
 
 
 
@@ -94,11 +104,9 @@ module.exports = function(app) {
   businessRoutes.post('/register', onboardingController.modifyBusinessValues, authenticationController.register);
   businessRoutes.get('/auth', checkAuthentication, verifyBusiness, onboardingController.showBusinessAuth);
   businessRoutes.get('/capture-auth', checkAuthentication, verifyBusiness, onboardingController.captureBusinessAuth);
-  // businessRoutes.get('/profile', checkAuthentication, financeComplete, verifyBusiness, businessController.showProfile);
-  businessRoutes.get('/profile', checkAuthentication, financeComplete, verifyBusiness, businessController.showProfile);
-  businessRoutes.get('/dashboard', businessController.showDashboard);
-  businessRoutes.get('/new-campaign', businessController.showNewCampaign);
-  businessRoutes.post('/create-campaign', businessController.createCampaign);
+  businessRoutes.get('/dashboard', checkAuthentication, financeComplete, verifyBusiness, businessController.showDashboard);
+  businessRoutes.get('/new-campaign', checkAuthentication, businessController.showNewCampaign);
+  businessRoutes.post('/create-campaign', checkAuthentication, businessController.createCampaign);
 
 
   app.use('/shopper', shopperRoutes);
